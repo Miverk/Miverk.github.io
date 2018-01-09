@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="发送私包到服务器发布包到私服（项目根目录执行） mvn clean source:jar deploy -Dmaven.test.skip=true pom文件注意点&amp;lt;distributionManagement&amp;gt;     &amp;lt;repository&amp;gt;         &amp;lt;id&amp;gt;releases&amp;lt;/id&amp;gt;         &amp;lt;name&amp;gt;Demo">
+<meta name="description" content="1. Freemarker是什么？FreeMarker 是一款模板引擎：即一种基于模板、用来生成输出文本(任何来自于 HTML格式的文本用来自动生成源代码)的通用工具。它是为 Java 程序员提供的一个开发包，或者说是一个类库。FreeMarker 不是 Web 开发的应用程序框架。它是一个适用于 Web 应用程序框架中的组件，但是 FreeMarker 引擎本身并不知道 HTTP 协议或 Jav">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sf-pmd-1.3.5 maven 上传流程">
-<meta property="og:url" content="http://michealwu.tech/blog/sf-pmd/index.html">
+<meta property="og:title" content="Freemarker解析">
+<meta property="og:url" content="http://michealwu.tech/blog/freemarker/index.html">
 <meta property="og:site_name" content="Michealwu">
-<meta property="og:description" content="发送私包到服务器发布包到私服（项目根目录执行） mvn clean source:jar deploy -Dmaven.test.skip=true pom文件注意点&amp;lt;distributionManagement&amp;gt;     &amp;lt;repository&amp;gt;         &amp;lt;id&amp;gt;releases&amp;lt;/id&amp;gt;         &amp;lt;name&amp;gt;Demo">
+<meta property="og:description" content="1. Freemarker是什么？FreeMarker 是一款模板引擎：即一种基于模板、用来生成输出文本(任何来自于 HTML格式的文本用来自动生成源代码)的通用工具。它是为 Java 程序员提供的一个开发包，或者说是一个类库。FreeMarker 不是 Web 开发的应用程序框架。它是一个适用于 Web 应用程序框架中的组件，但是 FreeMarker 引擎本身并不知道 HTTP 协议或 Jav">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-08T06:03:16.366Z">
+<meta property="og:image" content="https://i.imgur.com/PxmQGFZ.png">
+<meta property="og:image" content="https://i.imgur.com/1KcYA94.png">
+<meta property="og:updated_time" content="2018-01-09T07:59:44.618Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sf-pmd-1.3.5 maven 上传流程">
-<meta name="twitter:description" content="发送私包到服务器发布包到私服（项目根目录执行） mvn clean source:jar deploy -Dmaven.test.skip=true pom文件注意点&amp;lt;distributionManagement&amp;gt;     &amp;lt;repository&amp;gt;         &amp;lt;id&amp;gt;releases&amp;lt;/id&amp;gt;         &amp;lt;name&amp;gt;Demo">
+<meta name="twitter:title" content="Freemarker解析">
+<meta name="twitter:description" content="1. Freemarker是什么？FreeMarker 是一款模板引擎：即一种基于模板、用来生成输出文本(任何来自于 HTML格式的文本用来自动生成源代码)的通用工具。它是为 Java 程序员提供的一个开发包，或者说是一个类库。FreeMarker 不是 Web 开发的应用程序框架。它是一个适用于 Web 应用程序框架中的组件，但是 FreeMarker 引擎本身并不知道 HTTP 协议或 Jav">
+<meta name="twitter:image" content="https://i.imgur.com/PxmQGFZ.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://michealwu.tech/blog/sf-pmd/"/>
+  <link rel="canonical" href="http://michealwu.tech/blog/freemarker/"/>
 
 
 
 
 
-  <title>sf-pmd-1.3.5 maven 上传流程 | Michealwu</title>
+  <title>Freemarker解析 | Michealwu</title>
   
 
 
@@ -232,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/sf-pmd/">
+    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/freemarker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Michealwu">
@@ -249,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sf-pmd-1.3.5 maven 上传流程</h1>
+          <h1 class="post-title" itemprop="name headline">Freemarker解析</h1>
         
 
         <div class="post-meta">
@@ -261,8 +264,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-08T14:00:50+08:00">
-                2018-01-08
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-09T14:42:50+08:00">
+                2018-01-09
               </time>
             
 
@@ -299,52 +302,14 @@
       
 
       
-        <h2 id="发送私包到服务器"><a href="#发送私包到服务器" class="headerlink" title="发送私包到服务器"></a>发送私包到服务器</h2><pre><code>发布包到私服（项目根目录执行）
-mvn clean source:jar deploy -Dmaven.test.skip=true
-</code></pre><h2 id="pom文件注意点"><a href="#pom文件注意点" class="headerlink" title="pom文件注意点"></a>pom文件注意点</h2><pre><code>&lt;distributionManagement&gt;
-    &lt;repository&gt;
-        &lt;id&gt;releases&lt;/id&gt;
-        &lt;name&gt;Demo Release Repository&lt;/name&gt;
-        &lt;url&gt;http://nexus.sf-express.com/nexus/content/repositories/releases/&lt;/url&gt;
-    &lt;/repository&gt;
-    &lt;snapshotRepository&gt;
-        &lt;id&gt;snapshots&lt;/id&gt;
-        &lt;name&gt;Demo Snapshot Repository&lt;/name&gt;
-        &lt;url&gt;http://nexus.sf-express.com/nexus/content/repositories/snapshots/&lt;/url&gt;
-    &lt;/snapshotRepository&gt;
-&lt;/distributionManagement&gt; 
-
-&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;sf-private-reponsitory&lt;/id&gt;
-        &lt;name&gt;SF private repository&lt;/name&gt;
-        &lt;url&gt;http://nexus.sf-express.com/nexus/content/groups/public/&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
-</code></pre><h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><pre><code>[INFO] --- maven-gpg-plugin:1.6:sign (sign-artifacts) @ sf-pmd ---
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 16.744 s
-[INFO] Finished at: 2018-01-05T15:20:11+08:00
-[INFO] Final Memory: 24M/323M
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-gpg-plugin:1.6:sign (sign-artifacts) on project sf-pmd: Unable to execute gpg command: Error while executing process. Cannot run program &quot;gpg.exe&quot;: CreateProcess error=2, 系统找不到指定的文件。 -&gt; [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-</code></pre><p>出现上述问题，要引入如下标签</p>
-<pre><code>&lt;build&gt;
-   &lt;pluginManagement&gt;
-   &lt;plugins&gt;
-      &lt;plugin&gt;&lt;/plugin&gt;
-    &lt;/plugins&gt;
-    &lt;/pluginManagement&gt;
-&lt;/build&gt;
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>记录工作中出现的难题，方便自己查阅。</p>
+        <h2 id="1-Freemarker是什么？"><a href="#1-Freemarker是什么？" class="headerlink" title="1. Freemarker是什么？"></a>1. Freemarker是什么？</h2><p>FreeMarker 是一款模板引擎：即一种基于模板、用来生成输出文本(任何来自于 HTML格式的文本用来自动生成源代码)的通用工具。它是为 Java 程序员提供的一个开发包，或者说是一个类库。<br>FreeMarker 不是 Web 开发的应用程序框架。它是一个适用于 Web 应用程序框架中的组件，但是 FreeMarker 引擎本身并不知道 HTTP 协议或 Java  Servlet 的存在。它仅仅来生成文本内容。</p>
+<h2 id="2-Freemarker能做什么？"><a href="#2-Freemarker能做什么？" class="headerlink" title="2. Freemarker能做什么？"></a>2. Freemarker能做什么？</h2><p>使用 FreeMarker 作为视图层的组件，是为了给诸如 Struts 这样的 Model 2 应用框架提供现成的解决方案。比如代替Jsp，生成静态的Html等等；<br><a href="http://mvnrepository.com/artifact/org.freemarker/freemarker" title="bb" target="_blank" rel="noopener">http://mvnrepository.com/artifact/org.freemarker/freemarker</a></p>
+<p><img src="https://i.imgur.com/PxmQGFZ.png" alt="freeemarker"></p>
+<h2 id="3-Javassist是什么？"><a href="#3-Javassist是什么？" class="headerlink" title="3.Javassist是什么？"></a>3.Javassist是什么？</h2><p>Javassist是一款字节码编辑工具，可以直接编辑和生成Java生成的字节码，以达到对.class文件进行动态修改的效果。熟练使用这套工具，可以让Java编程更接近与动态语言编程。</p>
+<h2 id="4-Freemarker能做什么？"><a href="#4-Freemarker能做什么？" class="headerlink" title="4. Freemarker能做什么？"></a>4. Freemarker能做什么？</h2><p>最近对一个快速开发的框架很感兴趣，使用这个框架的开发人员采用面向声明的开发模式，异常的简单和方便，而且效率也是原来的好几倍。自己曾经在公司写过些类似的东西，都是通过实体或数据库提供数据结构，模板提供页面或代码结构，生成需要实现的具体页面和代码。但这个框架我搭起来后，在目录文件里找了半天都没看到半点生成的代码和页面，他是如何实现的？</p>
+<p>对，主要就是javassist这货的功劳！平时在添加依赖jar包时，总少不了它，其实Javassist是一个动态字节码生成框架，包括支持两种API，Java语言级别和字节码级别。简单的说就是他可以通过配置，在程序运行时，生成临时的java代码，来实现当前需要的特定功能的框架。下面我们来看看如何使用这个强大的框架。</p>
+<p><a href="http://mvnrepository.com/artifact/org.javassist/javassist" title="aa" target="_blank" rel="noopener">http://mvnrepository.com/artifact/org.javassist/javassist</a></p>
+<p><img src="https://i.imgur.com/1KcYA94.png" alt="javasisit"></p>
 
       
     </div>
@@ -369,8 +334,8 @@ mvn clean source:jar deploy -Dmaven.test.skip=true
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/adb/" rel="next" title="adb 常用命令">
-                <i class="fa fa-chevron-left"></i> adb 常用命令
+              <a href="/blog/markdown/" rel="next" title="markdownpad2-注册码">
+                <i class="fa fa-chevron-left"></i> markdownpad2-注册码
               </a>
             
           </div>
@@ -378,10 +343,6 @@ mvn clean source:jar deploy -Dmaven.test.skip=true
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/blog/markdown/" rel="prev" title="markdownpad2-注册码">
-                markdownpad2-注册码 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -495,7 +456,7 @@ mvn clean source:jar deploy -Dmaven.test.skip=true
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发送私包到服务器"><span class="nav-number">1.</span> <span class="nav-text">发送私包到服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pom文件注意点"><span class="nav-number">2.</span> <span class="nav-text">pom文件注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tips"><span class="nav-number">3.</span> <span class="nav-text">tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Freemarker是什么？"><span class="nav-number">1.</span> <span class="nav-text">1. Freemarker是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Freemarker能做什么？"><span class="nav-number">2.</span> <span class="nav-text">2. Freemarker能做什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Javassist是什么？"><span class="nav-number">3.</span> <span class="nav-text">3.Javassist是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Freemarker能做什么？"><span class="nav-number">4.</span> <span class="nav-text">4. Freemarker能做什么？</span></a></li></ol></div>
             
 
           </div>

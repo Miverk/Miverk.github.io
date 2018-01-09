@@ -232,6 +232,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/freemarker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Michealwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michealwu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/blog/freemarker/" itemprop="url">Freemarker解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-09T14:42:50+08:00">
+                2018-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-Freemarker是什么？"><a href="#1-Freemarker是什么？" class="headerlink" title="1. Freemarker是什么？"></a>1. Freemarker是什么？</h2><p>FreeMarker 是一款模板引擎：即一种基于模板、用来生成输出文本(任何来自于 HTML格式的文本用来自动生成源代码)的通用工具。它是为 Java 程序员提供的一个开发包，或者说是一个类库。<br>FreeMarker 不是 Web 开发的应用程序框架。它是一个适用于 Web 应用程序框架中的组件，但是 FreeMarker 引擎本身并不知道 HTTP 协议或 Java  Servlet 的存在。它仅仅来生成文本内容。</p>
+<h2 id="2-Freemarker能做什么？"><a href="#2-Freemarker能做什么？" class="headerlink" title="2. Freemarker能做什么？"></a>2. Freemarker能做什么？</h2><p>使用 FreeMarker 作为视图层的组件，是为了给诸如 Struts 这样的 Model 2 应用框架提供现成的解决方案。比如代替Jsp，生成静态的Html等等；<br><a href="http://mvnrepository.com/artifact/org.freemarker/freemarker" title="bb" target="_blank" rel="noopener">http://mvnrepository.com/artifact/org.freemarker/freemarker</a></p>
+<p><img src="https://i.imgur.com/PxmQGFZ.png" alt="freeemarker"></p>
+<h2 id="3-Javassist是什么？"><a href="#3-Javassist是什么？" class="headerlink" title="3.Javassist是什么？"></a>3.Javassist是什么？</h2><p>Javassist是一款字节码编辑工具，可以直接编辑和生成Java生成的字节码，以达到对.class文件进行动态修改的效果。熟练使用这套工具，可以让Java编程更接近与动态语言编程。</p>
+<h2 id="4-Freemarker能做什么？"><a href="#4-Freemarker能做什么？" class="headerlink" title="4. Freemarker能做什么？"></a>4. Freemarker能做什么？</h2><p>最近对一个快速开发的框架很感兴趣，使用这个框架的开发人员采用面向声明的开发模式，异常的简单和方便，而且效率也是原来的好几倍。自己曾经在公司写过些类似的东西，都是通过实体或数据库提供数据结构，模板提供页面或代码结构，生成需要实现的具体页面和代码。但这个框架我搭起来后，在目录文件里找了半天都没看到半点生成的代码和页面，他是如何实现的？</p>
+<p>对，主要就是javassist这货的功劳！平时在添加依赖jar包时，总少不了它，其实Javassist是一个动态字节码生成框架，包括支持两种API，Java语言级别和字节码级别。简单的说就是他可以通过配置，在程序运行时，生成临时的java代码，来实现当前需要的特定功能的框架。下面我们来看看如何使用这个强大的框架。</p>
+<p><a href="http://mvnrepository.com/artifact/org.javassist/javassist" title="aa" target="_blank" rel="noopener">http://mvnrepository.com/artifact/org.javassist/javassist</a></p>
+<p><img src="https://i.imgur.com/1KcYA94.png" alt="javasisit"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1019,7 +1146,7 @@ public void onComplete() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
