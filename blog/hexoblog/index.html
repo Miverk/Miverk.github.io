@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="输出已经安装的应用 adb shell pm list packages -f 模拟按键输入 adb shell input keyevent 模拟滑动输入 adb shell inputtouchscreen swipe x1 y1 x2 y2 dumpsys activity | gerp “tencent”">
+<meta name="description" content="Hexo搭建博客1.准备工作1.安装npm，git,hexo(本博客只安装hexo，npm和git自行安装) 2.有自己的github账号，（本人github账号是Miverk，之后会一直用这个账号来发布） 3.购买域账号（我是在阿里云上购买的一个.tech的账号） 2.安装hexo 和 建站安装hexo  $ npm install -g hexo-cli  如果碰到安装不了，可能是有些公司禁止">
 <meta property="og:type" content="article">
-<meta property="og:title" content="adb 常用命令">
-<meta property="og:url" content="http://michealwu.tech/blog/adb/index.html">
+<meta property="og:title" content="Hexo搭建博客">
+<meta property="og:url" content="http://michealwu.tech/blog/hexoblog/index.html">
 <meta property="og:site_name" content="Michealwu">
-<meta property="og:description" content="输出已经安装的应用 adb shell pm list packages -f 模拟按键输入 adb shell input keyevent 模拟滑动输入 adb shell inputtouchscreen swipe x1 y1 x2 y2 dumpsys activity | gerp “tencent”">
+<meta property="og:description" content="Hexo搭建博客1.准备工作1.安装npm，git,hexo(本博客只安装hexo，npm和git自行安装) 2.有自己的github账号，（本人github账号是Miverk，之后会一直用这个账号来发布） 3.购买域账号（我是在阿里云上购买的一个.tech的账号） 2.安装hexo 和 建站安装hexo  $ npm install -g hexo-cli  如果碰到安装不了，可能是有些公司禁止">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-06T09:25:47.196Z">
+<meta property="og:image" content="https://i.imgur.com/OFJZsmk.png">
+<meta property="og:image" content="https://i.imgur.com/jK2hpXC.png">
+<meta property="og:updated_time" content="2018-01-09T09:17:43.380Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="adb 常用命令">
-<meta name="twitter:description" content="输出已经安装的应用 adb shell pm list packages -f 模拟按键输入 adb shell input keyevent 模拟滑动输入 adb shell inputtouchscreen swipe x1 y1 x2 y2 dumpsys activity | gerp “tencent”">
+<meta name="twitter:title" content="Hexo搭建博客">
+<meta name="twitter:description" content="Hexo搭建博客1.准备工作1.安装npm，git,hexo(本博客只安装hexo，npm和git自行安装) 2.有自己的github账号，（本人github账号是Miverk，之后会一直用这个账号来发布） 3.购买域账号（我是在阿里云上购买的一个.tech的账号） 2.安装hexo 和 建站安装hexo  $ npm install -g hexo-cli  如果碰到安装不了，可能是有些公司禁止">
+<meta name="twitter:image" content="https://i.imgur.com/OFJZsmk.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://michealwu.tech/blog/adb/"/>
+  <link rel="canonical" href="http://michealwu.tech/blog/hexoblog/"/>
 
 
 
 
 
-  <title>adb 常用命令 | Michealwu</title>
+  <title>Hexo搭建博客 | Michealwu</title>
   
 
 
@@ -232,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/adb/">
+    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/hexoblog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Michealwu">
@@ -249,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">adb 常用命令</h1>
+          <h1 class="post-title" itemprop="name headline">Hexo搭建博客</h1>
         
 
         <div class="post-meta">
@@ -261,8 +264,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-06T18:00:00+08:00">
-                2018-01-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-09T17:42:50+08:00">
+                2018-01-09
               </time>
             
 
@@ -299,13 +302,60 @@
       
 
       
-        <p>输出已经安装的应用</p>
-<p>adb shell pm list packages -f</p>
-<p>模拟按键输入</p>
-<p>adb shell input keyevent</p>
-<p>模拟滑动输入</p>
-<p>adb shell inputtouchscreen swipe x1 y1 x2 y2</p>
-<p>dumpsys activity | gerp “tencent”</p>
+        <h1 id="Hexo搭建博客"><a href="#Hexo搭建博客" class="headerlink" title="Hexo搭建博客"></a>Hexo搭建博客</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><pre><code>1.安装npm，git,hexo(本博客只安装hexo，npm和git自行安装)
+2.有自己的github账号，（本人github账号是Miverk，之后会一直用这个账号来发布）
+3.购买域账号（我是在阿里云上购买的一个.tech的账号）
+</code></pre><h2 id="2-安装hexo-和-建站"><a href="#2-安装hexo-和-建站" class="headerlink" title="2.安装hexo 和 建站"></a>2.安装hexo 和 建站</h2><p>安装hexo</p>
+<blockquote>
+<p>$ npm install -g hexo-cli</p>
+</blockquote>
+<pre><code>如果碰到安装不了，可能是有些公司禁止了一些网站，可以设置代理
+</code></pre><blockquote>
+<p>$ npm config set proxy <a href="http://server:port" target="_blank" rel="noopener">http://server:port</a></p>
+<p>$ npm config set https-proxy <a href="http://server:port" target="_blank" rel="noopener">http://server:port</a></p>
+</blockquote>
+<p>安装好hexo后就可以建站了</p>
+<p>cd到你自己建的文件夹执行</p>
+<blockquote>
+<p>hexo init yourname</p>
+<p>cd yourname</p>
+<p>npm install</p>
+</blockquote>
+<p>yourname的名字是可以随便取的，hexo建站操作而已参考官方文档：<a href="https://hexo.io/zh-cn/" title="hexo" target="_blank" rel="noopener">https://hexo.io/zh-cn/</a></p>
+<p>建完站之后就可以发布了，先发布到本地服务器上看下blog是怎样的</p>
+<blockquote>
+<p>hexo s</p>
+</blockquote>
+<p>本地发布好没问题后，然后修改_config.yml文件，让博客关联到Github上的Github Pages</p>
+<pre><code>deploy:
+type: git
+repo: https://github.com/Miverk/Miverk.github.io.git
+branch: master
+</code></pre><p>修改完成之后，就可以发布到Github上了</p>
+<h2 id="3-发布"><a href="#3-发布" class="headerlink" title="3.发布"></a>3.发布</h2><blockquote>
+<p>hexo clean</p>
+<p>hexo g</p>
+<p>hexo d</p>
+</blockquote>
+<p>也可以简写命令，参考官网</p>
+<blockquote>
+<p>hexo d -g</p>
+</blockquote>
+<p>如果碰到发布时候not found，尝试下这个命令</p>
+<blockquote>
+<p>npm install hexo-deployer-git –save</p>
+</blockquote>
+<p>然后再部署看下，是否成功，下面是我部署成功的界面</p>
+<p><img src="https://i.imgur.com/OFJZsmk.png" alt="hexo d suceeess"></p>
+<h2 id="4-购买域名和域名绑定"><a href="#4-购买域名和域名绑定" class="headerlink" title="4.购买域名和域名绑定"></a>4.购买域名和域名绑定</h2><p>推荐去阿里云上购买一个域名进行绑定，域名的解析添加：</p>
+<p><img src="https://i.imgur.com/jK2hpXC.png" alt="aa"></p>
+<p>然后在工程的source目录下添加一个CNAME文件。里面填写自己的域名(我的域名：michealwu.tech, 1年9元O(∩_∩)O哈哈~)</p>
+<blockquote>
+<p>michealwu.tech</p>
+</blockquote>
+<p>这样整个流程就通了，以后要发布blog，只要在\source_posts文件夹下面创建一个.md的文件就行了。</p>
+<h2 id="5-结束语"><a href="#5-结束语" class="headerlink" title="5.结束语"></a>5.结束语</h2><p>虽然github pages免费，但是是国外服务器，国内访问可能会慢一点，单毕竟是免费的。有钱人可以去Node.js支持下。</p>
+<p>欢迎大家点击我的博客：<a href="http://michealwu.tech" title="michelawu">http://michealwu.tech</a></p>
 
       
     </div>
@@ -330,8 +380,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/aa/" rel="next" title="RX2.0的详细使用">
-                <i class="fa fa-chevron-left"></i> RX2.0的详细使用
+              <a href="/blog/freemarker/" rel="next" title="Freemarker解析">
+                <i class="fa fa-chevron-left"></i> Freemarker解析
               </a>
             
           </div>
@@ -339,10 +389,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/blog/sf-pmd/" rel="prev" title="sf-pmd-1.3.5 maven 上传流程">
-                sf-pmd-1.3.5 maven 上传流程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -394,8 +440,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -437,6 +492,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo搭建博客"><span class="nav-number">1.</span> <span class="nav-text">Hexo搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-准备工作"><span class="nav-number">1.1.</span> <span class="nav-text">1.准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装hexo-和-建站"><span class="nav-number">1.2.</span> <span class="nav-text">2.安装hexo 和 建站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-发布"><span class="nav-number">1.3.</span> <span class="nav-text">3.发布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-购买域名和域名绑定"><span class="nav-number">1.4.</span> <span class="nav-text">4.购买域名和域名绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-结束语"><span class="nav-number">1.5.</span> <span class="nav-text">5.结束语</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
