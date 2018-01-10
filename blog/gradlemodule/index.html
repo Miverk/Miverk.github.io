@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述我们知道，Android Studio是利用gradle进行构建的，我们经常接触到的gradle脚本是build.gradle，build.gradle有两个，一个在project下，一个是在app目录下，随着项目的迭代，我们会在app目录下的gradle中添加很多依赖，project下的gradle却不会发生很大的变化，所以会导致app下面的gradle文件越来越大，有时候查找对应的方法以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle模块化配置：让你的gradle代码控制在100行以内">
+<meta property="og:url" content="http://michealwu.tech/blog/gradlemodule/index.html">
+<meta property="og:site_name" content="Michealwu">
+<meta property="og:description" content="概述我们知道，Android Studio是利用gradle进行构建的，我们经常接触到的gradle脚本是build.gradle，build.gradle有两个，一个在project下，一个是在app目录下，随着项目的迭代，我们会在app目录下的gradle中添加很多依赖，project下的gradle却不会发生很大的变化，所以会导致app下面的gradle文件越来越大，有时候查找对应的方法以及">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.imgur.com/KoXX8dT.png">
+<meta property="og:updated_time" content="2018-01-10T08:12:27.289Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle模块化配置：让你的gradle代码控制在100行以内">
+<meta name="twitter:description" content="概述我们知道，Android Studio是利用gradle进行构建的，我们经常接触到的gradle脚本是build.gradle，build.gradle有两个，一个在project下，一个是在app目录下，随着项目的迭代，我们会在app目录下的gradle中添加很多依赖，project下的gradle却不会发生很大的变化，所以会导致app下面的gradle文件越来越大，有时候查找对应的方法以及">
+<meta name="twitter:image" content="https://i.imgur.com/KoXX8dT.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://michealwu.tech/blog/gradlemodule/"/>
+
+
+
+
+
+  <title>Gradle模块化配置：让你的gradle代码控制在100行以内 | Michealwu</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Michealwu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">原谅我这一生不羁放纵爱自由</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://michealwu.tech/blog/gradlemodule/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Michealwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michealwu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle模块化配置：让你的gradle代码控制在100行以内</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-10T16:10:50+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>我们知道，Android Studio是利用gradle进行构建的，我们经常接触到的gradle脚本是build.gradle，build.gradle有两个，一个在project下，一个是在app目录下，随着项目的迭代，我们会在app目录下的gradle中添加很多依赖，project下的gradle却不会发生很大的变化，所以会导致app下面的gradle文件越来越大，有时候查找对应的方法以及task非常不方便，尤其是在集成了tinker热修复之后，app下面的gradle已经达到了将近1000多行，最近刚好有时间认真研究了一下gradle，确切地说是groovy，然后通过脚本依赖实现了gradle解耦，成功的把app目录下的gradle代码控制在100行以内。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="常见配置"><a href="#常见配置" class="headerlink" title="常见配置"></a>常见配置</h2><p>通常的做法是在project目录下新建一个config.gradle文件，如下：</p>
+<pre><code>ext {
+    android = [
+                compileSdkVersion: 25,
+                buildToolsVersion: &quot;25.0.3
+]
+    supportLibrary = &quot;25.4.0&quot;
+    tinkerVerison = &quot;1.9.1&quot;
+    dependencies = [
+      &quot;multidex&quot;   : &quot;com.android.support:multidex:1.0.1&quot;,
+      &quot;okhttp3&quot;   : &quot;com.squareup.okhttp3:okhttp:3.9.0&quot;
+}
+</code></pre><p>然后在project下的build.gradle文件中引用</p>
+<pre><code>apply from: &quot;config.gradle&quot;
+</code></pre><p>再接着在app目录下的build.gradle中获取并使用</p>
+<pre><code>apply plugin: &apos;com.android.application&apos;
+apply from: &quot;package.gradle&quot;
+
+def cfg = rootProject.ext.android
+def librarys = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
+    dexOptions {
+        jumboMode = true
+    }
+//此处省略一万行代码
+}
+dependencies {
+    compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)
+    compile librarys[&quot;multidex&quot;]
+    compile librarys[&quot;okhttp3&quot;]
+//此处省略一万行代码
+}
+</code></pre><p>这种方式能够将我们的gradle统一进行管理，虽然并不能减少app的目录下的build.gradle的代码量之前，但是觉得够用了，本身对基于groovy的gradle不是很熟，虽然随着项目迭代，app目录下的build.gradle代码量越来越大，尤其是当项目集成了tinker之后，而后集成了<a href="https://github.com/mcxiaoke/packer-ng-plugin" title="packer" target="_blank" rel="noopener">packer-ng-plugin</a>打包，以及加入了一些自定义的Task之后，代码会显得非常臃肿，有时候改一个东西，需要找很久，由于对groovy不是很熟，在网上也看过一些文章，基本上都是在介绍gradle的基本知识以及依赖统一管理，加上在gradle里面写代码没有提示，一度让我以为这可能就是build.gradle的最终版了，直到最近项目刚上线，稍微有点空闲，然后决定彻底简化一下gradle代码。</p>
+<h2 id="url优化"><a href="#url优化" class="headerlink" title="url优化"></a>url优化</h2><p>按照config的配置，一般来讲，我们开发的时候至少会有两个服务器地址，正式跟测试，为了统一管理，先是写死在buildType里面的</p>
+<pre><code> buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;releaseUrl1\&quot;&quot;
+//          buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;releaseUrl2\&quot;&quot;
+        }
+        debug {
+            minifyEnabled true
+              buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;debugUrl1\&quot;&quot;
+//            buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;debugUrl2/\&quot;&quot;
+
+        }
+    }
+</code></pre><p>当我们的服务器地址只有一个正式的或者一个测试的时候，这样写完全OK的，但是如果是有多个地址的话，你每切换一次，都需要重新同步一下，还有就是，多人协作开发的时候，每次从Git服务器上面更新代码，只要更新到app目录下的gradle，都是需要重新同步的，参照config的配置，我们如果是引用的话就每次只需要读取引用的那个url，切换只需要修改config中的代码就可以了，下面是进行的优化：<br>在config中添加代码</p>
+<pre><code>    url = [
+  &quot;debug&quot;  : &quot;debugUrl1&quot;,
+//&quot;debug&quot;  : &quot;debugUrl2&quot;,    
+//&quot;debug&quot;  : &quot;debugUrl3&quot;,
+   &quot;release&quot;: &quot;releaseUrl1&quot;,
+// &quot;release&quot;: &quot;releaseUrl2&quot;
+
+    ]
+</code></pre><p>重新引用</p>
+<pre><code>//获取
+def url = rootProject.ext.url
+//使用
+//debug
+buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;${url[&quot;debug&quot;]}\&quot;&quot;
+//release
+buildConfigField &quot;String&quot;, &quot;AlphaUrl&quot;, &quot;\&quot;${url[&quot;release&quot;]}\&quot;&quot;
+</code></pre><h2 id="依赖优化"><a href="#依赖优化" class="headerlink" title="依赖优化"></a>依赖优化</h2><p>先看一看之前的代码</p>
+<pre><code>dependencies {
+ compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)
+ compile librarys[&quot;multidex&quot;]
+ compile librarys[&quot;supportAppcompat&quot;]
+ //此处省略一万行代码
+</code></pre><p>实际上library就是一个Map,其实这句代码转化成Java就是</p>
+<pre><code>compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)
+HashMap&lt;String,String&gt; hashMap=new HashMap&lt;&gt;();
+compile hashMap.get(&quot;multidex&quot;)
+compile hashMap.get(&quot;supportAppcompat&quot;)
+</code></pre><p>其实可能你也知道了，实际上我们完全可以写一个循环来简化这些代码，就跟HashMap的遍历一样</p>
+<pre><code>dependencies {
+compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)
+librarys.each { k, v -&gt; compile v }
+</code></pre><p>}</p>
+<h2 id="模块化配置"><a href="#模块化配置" class="headerlink" title="模块化配置"></a>模块化配置</h2><p>在我们进行常规的gradle配置中，我们并没有在project下的build目录添加很多代码，只是新建了一个config.gradle文件，然后再project目录下添加了一行依赖，所以就能够调用config中的代码，同样的，我们也可以把tinker，packer-ng-plugin，以及自定义task的配置文件用一个gradle文件进行配置，然后在app的目录下进行引用，实际上就是利用了gradle的插件依赖。</p>
+<h2 id="tinker配置"><a href="#tinker配置" class="headerlink" title="tinker配置"></a>tinker配置</h2><p>首先在app的目录下新建一个tinker.grale配置文件，为什么是tinker目录下，因为tinker的运行需要依赖’com.android.application’这个插件，所以必须放在这个目录下，然后复制粘贴tinker的配置代码，注意不要忘记修改tinker的id，我是在project目录下统一进行配置的tinker，所以只需要调用config中的代码</p>
+<p>//此处省略一万行代码</p>
+<p>def getTinkerIdValue() {<br>    return rootProject.ext.tinker.id</p>
+<p>}<br>//此处省略一万行代码</p>
+<p>然后在app下面的build.gradle中进行引用,注意看一下这行代码的位置，不要放在最开始，因为在依赖tinker.gradle文件的时候，不然你是打不了tinker的补丁的，tinker需要读取application的一些信息，放在buildTypes 之后，当时我也是调试了好久。</p>
+<pre><code>apply plugin: &apos;com.android.application&apos;
+def cfg = rootProject.ext.android
+def librarys = rootProject.ext.Dependencies
+def tinker = rootProject.ext.tinker
+def url = rootProject.ext.url
+
+ buildTypes {
+  //此处省略一万行代码
+}
+apply from: &quot;tinker.gradle&quot;
+</code></pre><p>到此，tinker就可以使用了，下面继续配置packer的gradle</p>
+<h2 id="packer配置"><a href="#packer配置" class="headerlink" title="packer配置"></a>packer配置</h2><p>新建package.gradle文件</p>
+<pre><code>apply plugin: &apos;packer&apos;
+packer {
+    archiveNameFormat = &apos;${buildType}-v${versionName}-${channel}&apos;
+    archiveOutput = new File(project.rootProject.buildDir, &quot;apks&quot;)
+    channelList = [&apos;xiaomi&apos;,&apos;meizu&apos;]
+}
+}
+</code></pre><p>在app下的build.gradle中添加依赖</p>
+<pre><code>apply plugin: &apos;com.android.application&apos;
+apply from: &quot;package.gradle&quot;
+</code></pre><h2 id="task配置"><a href="#task配置" class="headerlink" title="task配置"></a>task配置</h2><p>虽然Android Studio的application自带了很多task，但是并不能满足我们有些需求，比如我需要用Python将测试包上传至fir，就需要自定义task，所以我也打算把这部分给分离出来，新建upload.gradle</p>
+<pre><code>ext {
+   //此处省略一万行代码
+    startUpload = this.&amp;startUpload
+}
+//上传至fir
+def startUpload() {
+ //此处省略一万行代码
+}
+</code></pre><p>在project中引用</p>
+<pre><code>apply from: &quot;upload.gradle&quot;
+</code></pre><p>在app的build.gradle中可以直接调用</p>
+<pre><code>task toFir &lt;&lt; {
+    startUpload()
+}
+</code></pre><p>toFir &lt;&lt;，其实是gradle的语法，如果不加&lt;&lt;的话，每次编译的时候都会执行这个task，加了&lt;&lt;，只有执行这个task的时候才会执行里面的代码</p>
+<p><img src="https://i.imgur.com/KoXX8dT.png" alt="grad"></p>
+<p>只有81行，这样一来，调试就很轻松了，哪个脚本除了问题，就直接去调试相应的脚本就好了，不用在自己的gradle里面改来改去。</p>
+<h1 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h1><h2 id="tinker-测试"><a href="#tinker-测试" class="headerlink" title="tinker 测试"></a>tinker 测试</h2><p>运行命令gradlew tinkerpatchDebug或者打开右侧的可视化工具栏点击tinker下的tinkerpatchDebug，运行测试，运行结果：</p>
+<pre><code>Result: final signed patch result: G:\Note\ChuangMei\app\build\outputs\tinkerPatch\debug\patch_signed.apk, size=2110
+Result: final signed with 7zip patch result: G:\Note\ChuangMei\app\build\outputs\tinkerPatch\debug\patch_signed_7zip.apk, size=2439
+Warning: patch_signed_7zip.apk is bigger than patch_signed.apk 329 byte, you should choose patch_signed.apk at these time!
+Tinker patch done, total time cost: 8.806000s
+Tinker patch done, you can go to file to find the output G:\Note\ChuangMei\app\build\outputs/tinkerPatch/debug
+-----------------------Tinker patch end-------------------------
+BUILD SUCCESSFUL in 3m 16s
+</code></pre><h2 id="packer测试"><a href="#packer测试" class="headerlink" title="packer测试"></a>packer测试</h2><p>运行命令gradlew clean apkDebug运行测试，运行结果：</p>
+<pre><code>&gt; Task :app:apkDebug
+============================================================
+PackerNg - https://github.com/mcxiaoke/packer-ng-plugin
+============================================================
+Variant: debug
+Input: G:\Note\ChuangMei\app\build\outputs\apk\app-debug.apk
+Output: G:\Note\ChuangMei\build\apks
+Channels: [xiaomi meizu]
+Generating: debug-v1.6.3-xiaomi.apk
+Generating: debug-v1.6.3-meizu.apk
+Outputs: G:\Note\ChuangMei\build\apks
+</code></pre><h2 id="task测试"><a href="#task测试" class="headerlink" title="task测试"></a>task测试</h2><p>运行命令 gradlew task toFir，运行结果:</p>
+<pre><code>开始上传至fir
+http://api.fir.im/apps
+success_apk:{&quot;is_completed&quot;:true}
+success_icon:{&quot;is_completed&quot;:true}
+上传结束 with value 0
+</code></pre><h1 id="几点说明"><a href="#几点说明" class="headerlink" title="几点说明"></a>几点说明</h1><h2 id="gradle所放位置"><a href="#gradle所放位置" class="headerlink" title="gradle所放位置"></a>gradle所放位置</h2><p>为什么有的是放在project目录下，有的是放在app的目录下，因为gradle引用默认的是当前路径，这样放我引用的时候就不需要去配置所引用的gradle路径，当然如果你原因放置在同一个目录下面也是OK的，只需要在apply的时候加上引用的path即可。</p>
+<h2 id="引用位置"><a href="#引用位置" class="headerlink" title="引用位置"></a>引用位置</h2><p>为什么有的引用是放在头部，有的引用需要放置在中间，这个取决于引用的插件是否需要读取application的配置信息，如果是tinker，必须放置在中间，因为它生成patch包需要获取很多application信息，如果是packer打包的话，则不需要，这个需要格外留意一下，不然会有很多莫名其妙的错误。</p>
+<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><p>在同一个gradle脚本里面，方法调用是很简单的，但是当我们有多个gradle脚本的时候，如何相互调用彼此的方法呢，其实我之前想优化的时候，也是卡在这里，因为属性调用很简单，gradle提供了ext，所以我们可以很容易的获取其他gradle的属性，如果我们现在有两个gradle，一个是first.gradle，一个是second.gradle，我想在second.gradle里面调用first.gradle中的方法，应该怎么做呢？<br>只需要在first.gradle中进行如下配置</p>
+<pre><code>ext{ 
+    test= this.&amp;test
+ } 
+    def  test(){  
+       println(&quot;我被调用了&quot;)
+}  
+</code></pre><p>然后在second.gradle中进行配置</p>
+<pre><code>//直接调用
+   test()
+//通过task调用
+task CustomTask &lt;&lt; {
+    test()
+}
+</code></pre><h1 id="关于代码"><a href="#关于代码" class="headerlink" title="关于代码"></a>关于代码</h1><h2 id="package"><a href="#package" class="headerlink" title="package"></a>package</h2><p>需要配置签名，在keystore.properties中进行配置，可以进行多渠道打包</p>
+<h2 id="tinker"><a href="#tinker" class="headerlink" title="tinker"></a>tinker</h2><p>为了保证对gradle进行模块化分离不影响项目的构建，所以我都是用自己的真实项目进行构建的，因为简单的Demo很难模拟真实项目中的构建环境，所以demo中我只提供了gradle的配置文件，没有进行tinker的配置，但是已经对tinker进行了模块化分离。</p>
+<h2 id="upload"><a href="#upload" class="headerlink" title="upload"></a>upload</h2><p>上传至fir的代码是利用Python脚本进行上传的，需要配置Python环境以及安装requests库，感兴趣的话可以查看一下我之前的文章<a href="https://www.jianshu.com/p/0ec4c4e132e7" title="ac" target="_blank" rel="noopener">Python(一)Android借助Python实现自动打包上传fir</a></p>
+<p><a href="https://github.com/wustor/GradleModule" title="aabbcc" target="_blank" rel="noopener">代码下载</a></p>
+<p>—-转自<a href="https://www.jianshu.com/p/8d52afc1057d" target="_blank" rel="noopener">https://www.jianshu.com/p/8d52afc1057d</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/hexoblog/" rel="next" title="Hexo搭建博客">
+                <i class="fa fa-chevron-left"></i> Hexo搭建博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Michealwu</p>
+              <p class="site-description motion-element" itemprop="description">追求卓越无止境,勿忌别人品头足</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number"></span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见配置"><span class="nav-number">1.</span> <span class="nav-text">常见配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#url优化"><span class="nav-number">2.</span> <span class="nav-text">url优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖优化"><span class="nav-number">3.</span> <span class="nav-text">依赖优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块化配置"><span class="nav-number">4.</span> <span class="nav-text">模块化配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tinker配置"><span class="nav-number">5.</span> <span class="nav-text">tinker配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#packer配置"><span class="nav-number">6.</span> <span class="nav-text">packer配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task配置"><span class="nav-number">7.</span> <span class="nav-text">task配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行测试"><span class="nav-number"></span> <span class="nav-text">运行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tinker-测试"><span class="nav-number">1.</span> <span class="nav-text">tinker 测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#packer测试"><span class="nav-number">2.</span> <span class="nav-text">packer测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task测试"><span class="nav-number">3.</span> <span class="nav-text">task测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几点说明"><span class="nav-number"></span> <span class="nav-text">几点说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#gradle所放位置"><span class="nav-number">1.</span> <span class="nav-text">gradle所放位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用位置"><span class="nav-number">2.</span> <span class="nav-text">引用位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">3.</span> <span class="nav-text">方法调用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于代码"><span class="nav-number"></span> <span class="nav-text">关于代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#package"><span class="nav-number">1.</span> <span class="nav-text">package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tinker"><span class="nav-number">2.</span> <span class="nav-text">tinker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#upload"><span class="nav-number">3.</span> <span class="nav-text">upload</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Michealwu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
